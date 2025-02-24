@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// Lines.swift
 //
 // MIT License
 //
@@ -23,8 +23,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A declarative stroke which joins substrokes together using a new line, forming multiple lines of text
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public struct Lines<Strokes>: Stroke where Strokes: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    /// Create a multi-line stroke
+    /// - Parameters:
+    ///   - count: The number of new lines between each substroke. The default value is `1`
+    ///   - strokes: The strokes to assemble into a multi-line stroke
+    public init(
+        spacing count: Int = 1,
+        @Caligraphy strokes: () -> Strokes
+    ) {
+        self.count = count
+        self.strokes = strokes()
+    }
+
+    // MARK: - Stroke
+
+    public var body: some Stroke {
+        let separator = String(String(repeating: "\n", count: count))
+        strokes
+            .separatedBy(separator)
+    }
+
+    // MARK: - Private
+
+    private let count: Int
+    private let strokes: Strokes
+
+}

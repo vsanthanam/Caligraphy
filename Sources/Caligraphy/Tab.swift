@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// Tab.swift
 //
 // MIT License
 //
@@ -23,8 +23,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A tab stroke
+public struct Tab: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    /// Create a tab
+    public init() {}
+
+    // MARK: - Stroke
+
+    public var body: some Stroke {
+        Space()
+        Space()
+        Space()
+        Space()
+    }
+
+}

@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// Map.swift
 //
 // MIT License
 //
@@ -23,8 +23,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+public extension Stroke {
 
-@Test
-func example() {}
+    /// Map the contents of this stroke into another stroke
+    /// - Parameter mapper: The mapper function
+    /// - Returns: The mapped stroke
+    func map(
+        _ mapper: @Sendable @escaping (String) -> String?
+    ) -> some Stroke {
+        Map(self, mapper)
+    }
+
+}
+
+private struct Map<Strokes>: Stroke where Strokes: Stroke {
+
+    // MARK: - Initializers
+
+    init(
+        _ strokes: Strokes,
+        _ mapper: @Sendable @escaping (String) -> String?
+    ) {
+        self.strokes = strokes
+        self.mapper = mapper
+    }
+
+    // MARK: - Stroke
+
+    var content: String? {
+        guard let content = strokes.content else {
+            return nil
+        }
+        return mapper(content)
+    }
+
+    // MARK: - Private
+
+    private let strokes: Strokes
+    private let mapper: @Sendable (String) -> String?
+}

@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// StrokeList.swift
 //
 // MIT License
 //
@@ -23,8 +23,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+struct StrokeList<T>: Stroke where T: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    init(_ list: [T]) {
+        self.list = list
+    }
+
+    // MARK: - Stroke
+
+    var content: String? {
+        var result: String?
+        func append(_ component: String) {
+            if let current = result {
+                result = current + Caligraphy.separator + component
+            } else {
+                result = component
+            }
+        }
+        list
+            .compactMap(\.content)
+            .forEach(append)
+        return result
+    }
+
+    // MARK: - Private
+
+    private let list: [T]
+
+}

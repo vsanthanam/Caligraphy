@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// StringStroke.swift
 //
 // MIT License
 //
@@ -23,8 +23,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A stroke based on a Swift string
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public struct StringStroke: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    /// Create a stroke
+    /// - Parameter content: The string used to create the stroke
+    public init(_ content: some StringProtocol) {
+        self.content = String(content)
+    }
+
+    // MARK: - Stroke
+
+    public let content: String?
+
+}

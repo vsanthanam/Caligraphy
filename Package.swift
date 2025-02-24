@@ -5,20 +5,37 @@ import PackageDescription
 
 let package = Package(
     name: "Caligraphy",
+    platforms: [
+        .macOS(.v14),
+        .macCatalyst(.v17),
+        .iOS(.v17),
+        .watchOS(.v10),
+        .tvOS(.v17),
+        .visionOS(.v1)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "Caligraphy",
-            targets: ["Caligraphy"]),
+            targets: [
+                "Caligraphy"
+            ]
+        )
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "Caligraphy"),
+            name: "Caligraphy",
+            swiftSettings: [
+                .enableUpcomingFeature("StrictConcurrency=complete")
+            ]
+        ),
         .testTarget(
             name: "CaligraphyTests",
-            dependencies: ["Caligraphy"]
-        ),
+            dependencies: [
+                "Caligraphy"
+            ],
+            swiftSettings: [
+                .enableUpcomingFeature("StrictConcurrency=complete")
+            ]
+        )
     ]
 )

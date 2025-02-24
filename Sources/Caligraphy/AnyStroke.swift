@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// AnyStroke.swift
 //
 // MIT License
 //
@@ -23,8 +23,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A type erased stroke
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public struct AnyStroke: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    /// Create a type erased stroke from a typed stroke
+    /// - Parameter stroke: The stroke to type erase
+    public init(
+        _ stroke: some Stroke
+    ) {
+        _content = { stroke.content }
+    }
+
+    // MARK: - API
+
+    public var content: String? {
+        _content()
+    }
+
+    // MARK: - Private
+
+    private let _content: @Sendable () -> String?
+}

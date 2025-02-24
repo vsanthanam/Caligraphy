@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// AccumulateStrokes.swift
 //
 // MIT License
 //
@@ -23,8 +23,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+import Foundation
 
-@Test
-func example() {}
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+struct AccumulateStrokes<each Accumulated, Next>: Stroke where repeat each Accumulated: Stroke, Next: Stroke {
+
+    // MARK: - Initializers
+
+    init(
+        accumulated: repeat each Accumulated,
+        next: Next
+    ) {
+        self.accumulated = (repeat (each accumulated))
+        self.next = next
+    }
+
+    // MARK: - Stroke
+
+    var content: String? {
+        var result: String?
+        func append(_ component: String) {
+            if let current = result {
+                result = current + Caligraphy.separator + component
+            } else {
+                result = component
+            }
+        }
+        for component in repeat each accumulated {
+            if let content = component.content {
+                append(content)
+            }
+        }
+        if let content = next.content {
+            append(content)
+        }
+        return result
+    }
+
+    // MARK: - Private
+
+    private let accumulated: (repeat (each Accumulated))
+    private let next: Next
+
+}

@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// SkipStroke.swift
 //
 // MIT License
 //
@@ -23,8 +23,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+struct SkipStroke: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    init() {}
+
+    // MARK: - Stroke
+
+    let content: String? = nil
+
+}

@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// PrefixLines.swift
 //
 // MIT License
 //
@@ -23,8 +23,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public extension Stroke {
 
-@Test
-func example() {}
+    /// Prefix every line of this stroke with a string
+    /// - Parameter prefix: The prefix to apply to every line
+    /// - Returns: prefixed stroke
+    func prefixLines(
+        with prefix: String
+    ) -> some Stroke {
+        PrefixLines(prefix) { self }
+    }
+
+}
+
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+private struct PrefixLines<Strokes>: Stroke where Strokes: Stroke {
+
+    // MARK: - Initializers
+
+    init(
+        _ prefix: String,
+        @Caligraphy wrapping strokes: () -> Strokes
+    ) {
+        self.prefix = prefix
+        self.strokes = strokes()
+    }
+
+    // MARK: - Stroke
+
+    var content: String? {
+        guard let content = strokes.content else {
+            return nil
+        }
+
+        return content
+            .components(separatedBy: "\n")
+            .map { prefix + $0 }
+            .joined(separator: "\n")
+    }
+
+    // MARK: - Private
+
+    private let prefix: String
+    private let strokes: Strokes
+
+}

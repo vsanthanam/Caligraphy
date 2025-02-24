@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// StringExtensions.swift
 //
 // MIT License
 //
@@ -23,8 +23,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public extension String {
 
-@Test
-func example() {}
+    /// Create a string from a ``Stroke``
+    /// - Parameter content: The stroke
+    init(_ content: some Stroke) {
+        self = content.content ?? ""
+    }
+
+    /// Create a string from a ``Stroke``
+    /// - Parameter content: The result builder
+    init(
+        @Caligraphy content: () -> some Stroke
+    ) {
+        self.init(content())
+    }
+
+    /// Create a string from a ``Stroke``
+    /// - Parameter content: The stroke
+    init(_ content: some Stroke) async throws {
+        self = content.content ?? ""
+        try Task.checkCancellation()
+    }
+
+    /// Create a string from a ``Stroke``
+    /// - Parameter content: The result builder
+    init(
+        @Caligraphy content: () -> some Stroke
+    ) async throws {
+        try await self.init(content())
+    }
+
+}

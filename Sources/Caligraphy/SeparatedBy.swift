@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// SeparatedBy.swift
 //
 // MIT License
 //
@@ -23,8 +23,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public extension Stroke {
 
-@Test
-func example() {}
+    /// Join the upstream substrrokes together using a separator
+    /// - Parameter separator: The string separator
+    /// - Returns: The joined substrokes, separated by the provided separator
+    func separatedBy(
+        _ separator: String
+    ) -> some Stroke {
+        SeparatedBy(separator) { self }
+    }
+
+}
+
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+private struct SeparatedBy<Strokes>: Stroke where Strokes: Stroke {
+
+    // MARK: - Initializers
+
+    init(
+        _ separator: String,
+        @Caligraphy strokes: () -> Strokes
+    ) {
+        self.separator = separator
+        self.strokes = strokes()
+    }
+
+    // MARK: - Stroke
+
+    var content: String? {
+        Caligraphy.$separator.withValue(separator) { strokes.content }
+    }
+
+    // MARK: - Private
+
+    private let separator: String
+    private let strokes: Strokes
+
+}

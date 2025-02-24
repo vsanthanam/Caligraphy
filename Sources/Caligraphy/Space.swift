@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// Space.swift
 //
 // MIT License
 //
@@ -23,8 +23,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A space stroke
+public struct Space: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    /// Create a space
+    public init() {}
+
+    // MARK: - Stroke
+
+    public var body: some Stroke {
+        StringStroke(" ")
+    }
+
+}

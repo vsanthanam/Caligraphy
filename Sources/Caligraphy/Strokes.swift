@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// Strokes.swift
 //
 // MIT License
 //
@@ -23,8 +23,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// An entry point for the `@Caligraphy` result builder
+public struct Strokes<Wrapped>: Stroke where Wrapped: Stroke {
 
-@Test
-func example() {}
+    /// Create a stroke by composing multiple substrokes together
+    /// - Parameter wrapped: The substrokes to compose together
+    public init(
+        @Caligraphy wrapping wrapped: () -> Wrapped
+    ) {
+        self.wrapped = wrapped()
+    }
+
+    public var body: some Stroke {
+        wrapped
+    }
+
+    private let wrapped: Wrapped
+
+}

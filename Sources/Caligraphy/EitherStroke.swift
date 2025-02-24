@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// EitherStroke.swift
 //
 // MIT License
 //
@@ -23,8 +23,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A implementation detail of the ``Caligraphy`` result builder used to support if-else control flow.
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public enum _EitherStroke<First, Second>: Stroke where First: Stroke, Second: Stroke {
 
-@Test
-func example() {}
+    // MARK: - API
+
+    case first(First)
+
+    case second(Second)
+
+    // MARK: - Stroke
+
+    public var content: String? {
+        switch self {
+        case let .first(first):
+            first.content
+        case let .second(second):
+            second.content
+        }
+    }
+}

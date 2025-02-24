@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// NewLine.swift
 //
 // MIT License
 //
@@ -23,8 +23,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A new line stroke
+public struct NewLine: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    /// Create a new line
+    public init() {}
+
+    // MARK: - Stroke
+
+    public var body: some Stroke {
+        StringStroke("\n")
+    }
+
+}

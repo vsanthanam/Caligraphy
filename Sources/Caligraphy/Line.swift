@@ -1,5 +1,5 @@
 // Caligraphy
-// CaligraphyTests.swift
+// Line.swift
 //
 // MIT License
 //
@@ -23,8 +23,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Caligraphy
-import Testing
+/// A declarative stroke which joins substrokes together using an empty string, forming a single line of text
+@available(macOS 14.0, macCatalyst 17.0, iOS 17.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
+public struct Line<Strokes>: Stroke where Strokes: Stroke {
 
-@Test
-func example() {}
+    // MARK: - Initializers
+
+    /// Create a line
+    /// - Parameter strokes: The strokes to join into the line
+    public init(
+        @Caligraphy strokes: () -> Strokes
+    ) {
+        self.strokes = strokes()
+    }
+
+    // MARK: - Stroke
+
+    public var body: some Stroke {
+        strokes
+            .separatedBy("")
+    }
+
+    // MARK: - Private
+
+    private let strokes: Strokes
+}
